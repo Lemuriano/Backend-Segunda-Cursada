@@ -21,27 +21,13 @@ class ProductManager {
     #productList
     #productDirPath
     #productFilePath
-    #fs
 
     constructor(){
         this.#productList = new Array()
         this.#productDirPath = __dirname + '/db'
         this.#productFilePath = this.#productDirPath + "/products.json"
     }
-    
-    // #leerproducto = async () => {
-    //     await this.#fs.promises.mkdir(this.#productDirPath, {recursive: true})
-    //     if (!this.#fs.existsSync(this.#productFilePath)){
-    //             console.log(!this.#fs.existsSync(this.#productFilePath))
-    //             await this.#fs.promises.writeFile(this.#productFilePath, "[]")
-    //             const listProducts = await this.#fs.promises.readFile(this.#productFilePath, 'utf8')
-    //             return listProducts
-    //     }else{
-    //         const listProducts = await this.#fs.promises.readFile(this.#productFilePath, 'utf8')
-    //         return listProducts
-    //     }
-        
-    // }
+
 
     addProduct = async (nuevoProducto) =>{
         try {

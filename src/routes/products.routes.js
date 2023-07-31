@@ -3,10 +3,10 @@ import ProductManager from '../clases/Productmanager.js'
 
 
 const router = Router()
-const pm = new ProductManager
+const productManager = new ProductManager
 
 router.get('/', async (req, res) => {
-    let listaProductos = await pm.getProducts()
+    let listaProductos = await productManager.getProducts()
     res.send(listaProductos)
 })
 
@@ -20,14 +20,14 @@ router.post('/', (req, res) => {
         category,
         thumbnails,
     }
-    pm.addProduct(nuevoProducto)
+    productManager.addProduct(nuevoProducto)
     res.send({message: 'post ok'})
 })
 
 router.get('/:pid', async (req, res) => {
     try {
         const {pid} = req.params
-        const listaProductos = await pm.getProducts();
+        const listaProductos = await productManager.getProducts();
         const productoId = listaProductos.find(prod => prod.id === Number(pid))
         if(productoId != undefined){
             return res.status(200).json(productoId)
@@ -44,7 +44,7 @@ router.put('/:pid', async (req, res) => {
     try {
         const {pid} = req.params
         const {title, description, price, status, category} = req.body
-        const listaProductos = await pm.getProducts();
+        const listaProductos = await productManager.getProducts();
         const prodIndex = listaProductos.findIndex(prod => prod.id === Number(pid))
         if(prodIndex !== -1){
             listaProductos[prodIndex].title = title
@@ -52,7 +52,7 @@ router.put('/:pid', async (req, res) => {
             listaProductos[prodIndex].price = price
             listaProductos[prodIndex].status = status
             listaProductos[prodIndex].category = category
-            await pm.updtProducts(listaProductos)
+            await productManager.updtProducts(listaProductos)
             return res.json({ message: "producto acualizado"})
         }
         return res.json({ message: `no existe producto con el id ${pid}`})
@@ -64,11 +64,11 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     try {
         const {pid} = req.params
-        const listaProductos = await pm.getProducts();
+        const listaProductos = await productManager.getProducts();
         const productoIndex = listaProductos.findIndex(e => e.id === Number(pid))
         if(productoIndex !== -1){
             listaProductos.splice(productoIndex, 1)
-            pm.updtProducts(listaProductos)
+            productManager.updtProducts(listaProductos)
             return res.status(200).json({ message : 'producto elimindo'})
         }
         res.json({ message: `no existe producto con el id ${pid}`})
