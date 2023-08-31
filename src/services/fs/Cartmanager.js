@@ -1,13 +1,7 @@
 import fs from "fs"
-import __dirname from "../utils.js"
+import __dirname from "../../utils.js"
 import readDb from "./Readdb.js"
-
-class Cart{
-    constructor(){
-        this.products = new Array(),
-        this.id
-    }
-}
+import Cart from "./models/Cart.js"
 
 class CartManager{
     #cartList
@@ -16,10 +10,11 @@ class CartManager{
 
     constructor(){
         this.#cartList = new Array()
-        this.#cartDirPath = __dirname + '/db'
+        this.#cartDirPath = __dirname + '../Data'
         this.#cartFilePath = this.#cartDirPath + "/carts.json"
     }
 
+    
 
     newCart = async () => {
         try {

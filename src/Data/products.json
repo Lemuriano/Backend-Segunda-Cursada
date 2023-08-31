@@ -1,0 +1,41 @@
+[
+    {
+        "title": "Auriculares Xiaomi",
+        "description": "Auriculares inhalambricos marca Xiaomi",
+        "code": "XMI-2019",
+        "price": 19,
+        "status": true,
+        "category": "Accesorios",
+        "thumbnails": [],
+        "id": 1
+    },
+    {
+        "title": "Monitor Curvo UltraView 34C",
+        "description": "Sumérgete en una experiencia visual envolvente con el monitor curvo UltraView 34C. Con una pantalla ultrapanorámica de 34 pulgadas, resolución QHD y altas tasas de actualización, este monitor es ideal para multitarea, diseño y entretenimiento.",
+        "code": "UVC-2023",
+        "price": 760,
+        "status": true,
+        "category": "Monitores",
+        "id": 2
+    },
+    {
+        "title": "Consola de videojuegos PlayStation 5",
+        "description": "La PlayStation 5 es alta consola de videojuegos de Sony con procesador AMD Zen 2, gráficos RDNA 2 y unidades de almacenamiento SSD.",
+        "code": "XMI-2019",
+        "price": 20000,
+        "status": true,
+        "category": "Videojuegos",
+        "thumbnails": [],
+        "id": 3
+    },
+    {
+        "title": "Auriculares Xiaomi",
+        "description": "Auriculares inhalambricos marca Xiaomi",
+        "code": "XMI-2019",
+        "price": 19,
+        "status": true,
+        "category": "Accesorios",
+        "thumbnails": [],
+        "id": 4
+    }
+]
