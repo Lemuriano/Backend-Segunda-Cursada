@@ -1,3 +1,4 @@
+import { isObjectIdOrHexString } from "mongoose"
 import cartModel from "./models/cart.js"
 
 class Cartmanager{
@@ -40,13 +41,12 @@ class Cartmanager{
 
     updateCartProductById = async(cartId, productUpdatedId, quantity) =>{
         try {
-            let updateProductResult = await cartModel.updateOne({_id:cartId,  products:{ $elemMatch: {id: productUpdatedId}}}, quantity)
+            let updateProductResult = await cartModel.updateOne({ "_id": cartId, "products.id": productUpdatedId},{ $set: { "products.$.quantity": quantity } })
             return updateProductResult
         } catch (error) {
             return error
         }
     }
-    
 
     deleteProducts = async(cartId) =>{
         try {

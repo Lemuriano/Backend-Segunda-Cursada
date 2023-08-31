@@ -50,7 +50,7 @@ class Cartcontroller{
     updateProductQuantity = async (req, res) => {
         try {
             const {cid, pid} = req.params
-            const {quantity} = req.body
+            const quantity = parseInt(req.body.quantity)
             let updateResult = await Cartmanager.updateCartProductById(cid, pid, quantity)
             
             res.send({result:"Succes", payload:updateResult})
