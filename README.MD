@@ -16,8 +16,11 @@ DELETE: Eliminar un producto de la base de datos.
 "_api/carts_"
 
 GET: Obtiene la lista de todos los carritos como asi tambien por su id.
+
 POST: Agrega un producto a la base de datos con la cantidad de ejemplares.
+
 PUT: Modifica la cantidad de ejemplares de un producto de un carrito.
+
 DELETE: Eliminar carrito por su id.
 
 **Endpoints de vistas mediante handlebars**
