@@ -1,8 +1,8 @@
-#Proyecto Final Backend Coderhouse (Segunda entrega)
+#Proyecto Final Backend Coderhouse (Segunda entrega)#
 
 El proyecto consiste en un servidor APIrestful, esta entrega contiene segun lo pedido
 
-##Endpoints
+##Endpoints##
 
 **Endpoints de recursos**
 _api/products_
