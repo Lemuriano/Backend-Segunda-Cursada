@@ -5,6 +5,7 @@ El proyecto consiste en un servidor APIrestful, esta entrega contiene segun lo p
 ##Endpoints##
 
 **Endpoints de recursos**
+
 _api/products_
 _api/carts_
 
