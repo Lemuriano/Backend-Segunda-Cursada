@@ -10,11 +10,11 @@ class Productmanager {
         }
     }
 
-    getProducts = async (limit, page, filter, sortOrder) =>{
+    getProducts = async (limit, page, filter, sortOrder) =>{       
         try {
             if (sortOrder !== false){
                 const sortOption = {"price": sortOrder}
-                let productListResult = await productModel.paginate(filter,{limit:limit, page, sort:sortOption, lean:true})
+                let productListResult = await productModel.paginate({productByIdResult},{limit:limit, page, sort:sortOption})
                 return productListResult
             } else {
                 let productListResult = await productModel.paginate(filter,{limit:limit, page, lean:true})
@@ -27,7 +27,7 @@ class Productmanager {
 
     getProductsById = async (productId) =>{
         try {
-            let productByIdResult = await productModel.find({_id:productId})
+            let productByIdResult = await productModel.findById({_id:productId}).lean()
             return productByIdResult
         } catch (error) {
             return error

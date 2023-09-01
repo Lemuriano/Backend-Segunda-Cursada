@@ -9,24 +9,24 @@
             <th>Detalles</th>
             <th></th>
         </tr>
-        {{#each docs}}
+        {{#each productListJSON.docs}}
             <tr>
                 <td>{{this.title}}</td>
                 <td>{{this.description}}</td>
                 <td>{{this.category}}</td>
-                <td>{{this.price}}</td>
-                <td><a href="/api/products/{{this.id}}">Detalles</a></td>
+                <td>${{this.price}}</td>
+                <td><a href="/products/{{id}}">Detalles</a></td>
                 <td><Button>Add To Cart</Button></td>
             </tr>
-        {{/each}}
+        {{/each}}    
     </table>
     <div>
-        {{#if hasPrevPage}}
-        <a href={{this.prevLink}}> <-Pagina Anterior</a>
+        {{#if productListJSON.hasPrevPage}}
+        <a href={{productListJSON.prevLink}}> <-Pagina Anterior</a>
         {{/if}}
-        <span>Pagina {{page}}</span>
-        {{#if hasNextPage}}
-        <a href={{this.nextLink}}>Pagina siguiente-></a>
+        <span>Pagina {{productListJSON.page}}</span>
+        {{#if productListJSON.hasNextPage}}
+        <a href={{productListJSON.nextLink}}>Pagina siguiente-></a>
         {{/if}}
     </div>
 </main>

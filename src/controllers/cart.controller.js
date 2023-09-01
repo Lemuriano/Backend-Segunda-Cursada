@@ -69,6 +69,17 @@ class Cartcontroller{
         }
         
     }
+
+    viewCartProducts = async (req, res) => {
+        try {
+            const {cid} = req.params
+            let cartByIdResult = await Cartmanager.getCartsById(cid)
+            res.render('carts', cartByIdResult)
+        } catch (error) {
+            res.send({message: `Error al obtener id:${error}`})
+        }
+       
+    }
 }
 
 export default new Cartcontroller
