@@ -11,7 +11,8 @@ class Productcontroller{
             const {category, status} = req.query
             const sortOrder = req.query.sort === "asc" || req.query.sort === "desc"? req.query.sort : false
             const filter = {}
-    
+            
+            //objeto para hacer la consulta en mongo
             if(category){
                 filter.category = { $regex: `\\b${category}\\b`, $options: 'i' }
             }
@@ -21,9 +22,10 @@ class Productcontroller{
             }
            
             let listaProductos = await Productmanager.getProducts(limit,page,filter,sortOrder)
-            res.send({status:"succes", payload:listaProductos})
+            
+            res.status(200).send({status:"succes", payload:listaProductos})
         } catch (error) {
-            res.send({message:`Error al lista de archivos de la base de datos: ${error}`})
+            res.status(500).send({message:`Error al lista de archivos de la base de datos: ${error}`})
 
         }
     }
@@ -32,9 +34,9 @@ class Productcontroller{
         try {
             const {pid} = req.params
             let productById = await Productmanager.getProductsById(pid)
-            res.send({result:"Succes", payload:productById})
+            res.status(200).send({result:"Succes", payload:productById})
         } catch (error) {
-            res.send({message: `Error al obtener id:${error}`})
+            res.status(500).send({message: `Error al obtener id:${error}`})
         }
        
     }
@@ -57,64 +59,70 @@ class Productcontroller{
 
 
             let productList = await Productmanager.getProducts(limit,page,filter,sortOrder)
-            
 
-            //se captura la url de la solicitud, se parsean sus querys y se actualizan a partir del objeto obtenido. Esto permite que no importa el orden de las querys, los objetos prevLink y netxLink funcionan
             
-            let parsedUrl = req.originalUrl
-            
-
-            let isQueryEmpty = JSON.stringify(req.query) === '{}'
-            
-            if(isQueryEmpty){
-                parsedUrl += '?'
-            }
-            
-            const parsedUrlParams = new URLSearchParams(parsedUrl)
-
-            if(productList.hasNextPage === true){
-                if(parsedUrlParams.has('page')){
-                    parsedUrlParams.set('page', productList.page +1)
-                    const urlToString = parsedUrlParams.toString()
-                    const decodedUrl = decodeURIComponent(urlToString)
-                    
-                    productList.nextLink = decodedUrl
-                }
-                else{
-                    parsedUrlParams.append('page', productList.page +1)
-                    const urlToString = parsedUrlParams.toString()
-                    const decodedUrl = decodeURIComponent(urlToString)
-                    productList.nextLink = decodedUrl
-                }
+            if(productList.docs.length === 0){
+                res.status(400).render('error', {error:"Error en los parametros de busqueda"})
             }else{
-                productList.prevLink = null
-            }
+                //se captura la url de la solicitud, se parsean sus querys y se actualizan a partir del objeto obtenido. Esto permite que no importa el orden de las querys, los objetos prevLink y netxLink funcionan
+            
+                let parsedUrl = req.originalUrl
+                
 
-            if(productList.hasPrevPage){
-                if(parsedUrlParams.has('page')){
-                    parsedUrlParams.set('page', productList.page -1)
-                    parsedUrlParams.toString()
-                    const decodedUrl = decodeURIComponent(parsedUrlParams)
-                    productList.prevLink = decodedUrl
+                let isQueryEmpty = JSON.stringify(req.query) === '{}'
+                
+                if(isQueryEmpty){
+                    parsedUrl += '?'
+                }
+                
+                const parsedUrlParams = new URLSearchParams(parsedUrl)
+
+                //se genern las propiedad prevLink y nextLink para 
+    
+                if(productList.hasNextPage === true){
+                    if(parsedUrlParams.has('page')){
+                        parsedUrlParams.set('page', productList.page +1)
+                        const urlToString = parsedUrlParams.toString()
+                        const decodedUrl = decodeURIComponent(urlToString)
+                        
+                        productList.nextLink = decodedUrl
+                    }
+                    else{
+                        parsedUrlParams.append('page', productList.page +1)
+                        const urlToString = parsedUrlParams.toString()
+                        const decodedUrl = decodeURIComponent(urlToString)
+                        productList.nextLink = decodedUrl
+                    }
                 }else{
-                    parsedUrlParams.append('page', productList.page -1)
-                    parsedUrlParams.toString()
-                    const decodedUrl = decodeURIComponent(parsedUrlParams)
-                    productList.prevLink = decodedUrl
+                    productList.nextLink = null
                 }
-            }else{
-                productList.prevLink = null
-            }
-            
-            //conversion del objeto de mongo para renderizarlo en handlebars
-            let productListJSON = JSON.parse(JSON.stringify(productList))
 
-            res.render('products', {
-                productListJSON,
-                style:"index.css"
-            })
+                if(productList.hasPrevPage){
+                    if(parsedUrlParams.has('page')){
+                        parsedUrlParams.set('page', productList.page -1)
+                        parsedUrlParams.toString()
+                        const decodedUrl = decodeURIComponent(parsedUrlParams)
+                        productList.prevLink = decodedUrl
+                    }else{
+                        parsedUrlParams.append('page', productList.page -1)
+                        parsedUrlParams.toString()
+                        const decodedUrl = decodeURIComponent(parsedUrlParams)
+                        productList.prevLink = decodedUrl
+                    }
+                }else{
+                    productList.prevLink = null
+                }
+                
+                //conversion del objeto de mongo para renderizarlo en handlebars
+                let productListJSON = JSON.parse(JSON.stringify(productList))
+
+                res.status(200).render('products', {
+                        productListJSON,
+                        style:"index.css"
+                })
+             }
         } catch (error) {
-            res.send({message:`Error al lista de archivos de la base de datos: ${error}`})
+            res.status(500).render('error',{error})
 
         }
     }
@@ -123,12 +131,17 @@ class Productcontroller{
         try {
             const {pid} = req.params
             const productById = await Productmanager.getProductsById(pid)
-            res.render('prodetails', {
-                productById,
-                style:"index.css"
-            })
+            if(productById._id){
+                res.status(200).render('prodetails', {
+                    productById,
+                    style:"index.css"
+                })
+            }else{
+                res.status(400).render('error', {error:`No existe producto con id ${pid}`})
+            }
+            
         } catch (error) {
-            res.send({message: `Error al obtener id:${error}`})
+            res.status(500).send({message: `Error al obtener id:${error}`})
         }
     }
     
@@ -144,9 +157,9 @@ class Productcontroller{
                 thumbnails,
             }
             let nuevoProductoPayload = await Productmanager.addProducts(nuevoProducto)
-            res.send({status:"Producto agregado", payload: nuevoProductoPayload})
+            res.status(201).send({status:"Producto agregado", payload: nuevoProductoPayload})
         } catch (error) {
-            res.send({message:`Error al añadir producto a la base de datos: ${error}`})
+            res.status(500).send({message:`Error al añadir producto a la base de datos: ${error}`})
         }
     }
 
@@ -155,19 +168,28 @@ class Productcontroller{
             const {pid} = req.params
             const productUpdated = req.body
             let updateResult = await Productmanager.updateProducts(pid, productUpdated)
-            res.send({result:"Succes", payload:updateResult})
+            if(updateResult._id){
+                res.status(201).send({result:"Succes", payload:updateResult})
+            }else{
+                res.status(400).render('error', {error:`No existe producto con id ${pid}`})
+            }            
         } catch (error) {
-            res.sed({message: 'Id no encontrado'})   
+            res.status(500).send({message: 'Id no encontrado'})   
         }
     }
     
     deleteProducts = async (req, res) => {
         try {
             const {pid} = req.params
-            let deleteResult = await Productmanager.deleteProducts(pid)
+            let deleteResultPayload = await Productmanager.deleteProducts(pid)
             res.send({result:'Succes', payload:deleteResult})
+            if(deleteResult.acknowledged === true){
+                res.status(200).send({result:"Succes", payload:deleteResultPayload})
+            }else{
+                res.status(401).send({result:"error", payload:`No existe el carrito con el id ${cid}`})
+            }
         } catch (error) {
-            res.send({ message: 'Error al eliminar producto'})   
+            res.status(500).send({ message: 'Error al eliminar producto'})   
         }
         
     }

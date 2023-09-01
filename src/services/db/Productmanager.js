@@ -14,7 +14,8 @@ class Productmanager {
         try {
             if (sortOrder !== false){
                 const sortOption = {"price": sortOrder}
-                let productListResult = await productModel.paginate({productByIdResult},{limit:limit, page, sort:sortOption})
+                let productListResult = await productModel.paginate(filter,{limit:limit, page, sort:sortOption})
+                
                 return productListResult
             } else {
                 let productListResult = await productModel.paginate(filter,{limit:limit, page, lean:true})

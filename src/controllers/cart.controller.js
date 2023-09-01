@@ -1,25 +1,26 @@
 import { Mongoose } from "mongoose"
 import Cartmanager from "../services/db/Cartmanager.js"
 import Productmanager from "../services/db/Productmanager.js"
-// import ProductManager from "../services/fs/Productmanager.js"
+// import ProductManager from "../services/fs/Productmanager.js" ----> para usar persistencia con filesistem (falta modificar los metodos)
+
 
 class Cartcontroller{
 
     createCarts = async (req, res) => {
         try {
             let newCartPayload = await Cartmanager.createCart()
-            res.send({status:"Nuevo carrito creado", payload: newCartPayload})
+            res.status(201).send({status:"Nuevo carrito creado", payload: newCartPayload})
         } catch (error) {
-            res.send({message:`Error al añadir producto a la base de datos: ${error}`})
+            res.status(500).send({message:`Error al añadir producto a la base de datos: ${error}`})
         }
     }
 
     getCarts = async (req, res) => {
         try {
-            let cartsList = await Cartmanager.getCarts()
-            res.send({status:"succes", payload:cartsList})
+            let cartsListPayload = await Cartmanager.getCarts()
+            res.status(200).send({status:"succes", payload:cartsListPayload})
         } catch (error) {
-            res.send({message:`Error al obtener lista de carrito: ${error}`})
+            res.status(500).send({message:`Error al obtener lista de carrito: ${error}`})
 
         }
     }
@@ -28,22 +29,28 @@ class Cartcontroller{
         try {
             const {cid} = req.params
             let cartByIdResultPayload = await Cartmanager.getCartsById(cid)
-            res.send({result:"Succes", payload:cartByIdResultPayload})
+            if(cartByIdResultPayload.products){
+                res.status(200).send({result:"Succes", payload:cartByIdResultPayload})
+            }else{
+                res.status(401).send({result:"error", payload:`No existe el carrito con el id ${cid}`})
+            }
         } catch (error) {
-            res.send({message: `Error al obtener id:${error}`})
+            res.status(500).send({message: `Error al obtener id:${error}`})
         }
-       
     }
     
     updateCart = async (req, res) => {
         try {
             const {cid} = req.params
-            const productUpdated = req.body
-            let updateResult = await Cartmanager.updateCart(cid, productUpdated)
-            
-            res.send({result:"Succes", payload:updateResult})
+            const productUpdatedPayload = req.body
+            let updateResult = await Cartmanager.updateCart(cid, productUpdatedPayload)
+            if(updateResult.acknowledged === true){
+                res.status(200).send({result:"Succes", payload:updateResult})
+            }else{
+                res.status(401).send({result:"error", payload:`No existe el carrito con el id ${cid}`})
+            }
         } catch (error) {
-            res.send({message: 'Id no encontrado'})   
+            res.status(500).send({message: 'Id no encontrado'})   
         }
     }
 
@@ -51,19 +58,26 @@ class Cartcontroller{
         try {
             const {cid, pid} = req.params
             const quantity = parseInt(req.body.quantity)
-            let updateResult = await Cartmanager.updateCartProductById(cid, pid, quantity)
-            
-            res.send({result:"Succes", payload:updateResult})
+            let updateResultPayload = await Cartmanager.updateCartProductById(cid, pid, quantity)
+            if(updateResultPayload.acknowledged === true){
+                res.status(200).send({result:"Succes", payload:updateResultPayload})
+            }else{
+                res.status(401).send({result:"error", payload:`No existe el carrito con el id ${cid}`})
+            }
         } catch (error) {
-            res.send({message: 'Id no encontrado'})   
+            res.status(500).send({message: 'Id no encontrado'})   
         }
     }
     
     deleteAllCartProducts = async (req, res) => {
         try {
             const {cid} = req.params
-            let deleteResult = await Cartmanager.deleteProducts(cid)
-            res.send({result:'Succes', payload:deleteResult})
+            let deleteResultPayload = await Cartmanager.deleteProducts(cid)
+            if(deleteResultPayload.acknowledged === true){
+                res.status(200).send({result:"Succes", payload:deleteResultPayload})
+            }else{
+                res.status(401).send({result:"error", payload:`No existe el carrito con el id ${cid}`})
+            }
         } catch (error) {
             res.send({ message: 'Error al eliminar producto'})   
         }
@@ -75,12 +89,12 @@ class Cartcontroller{
             const {cid} = req.params
             let cartByIdResult = await Cartmanager.getCartsById(cid)
             let cartProductsListJSON = JSON.parse(JSON.stringify(cartByIdResult))
-            res.render('carts', {
+            res.status(200).render('carts', {
                 cartProductsListJSON,
                 style:"index.css"
             })
         } catch (error) {
-            res.send({message: `Error al obtener id:${error}`})
+            res.status(500).send({message: `Error al obtener id:${error}`})
         }
        
     }
