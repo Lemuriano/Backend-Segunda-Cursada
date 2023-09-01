@@ -21,8 +21,15 @@ const productsSchema = new mongoose.Schema({
         unique: true
     },
     price: numberTypeRequired,
-    status: Boolean,
-    category: stringTypeRequired,
+    status: {
+        type:Boolean,
+        index:true
+    },
+    category: {
+        type: String,
+        requied: true,
+        index:true
+    },
     thumbnails:{
         type: Array,
         default:[]

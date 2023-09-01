@@ -74,7 +74,11 @@ class Cartcontroller{
         try {
             const {cid} = req.params
             let cartByIdResult = await Cartmanager.getCartsById(cid)
-            res.render('carts', cartByIdResult)
+            let cartProductsListJSON = JSON.parse(JSON.stringify(cartByIdResult))
+            res.render('carts', {
+                cartProductsListJSON,
+                style:"index.css"
+            })
         } catch (error) {
             res.send({message: `Error al obtener id:${error}`})
         }

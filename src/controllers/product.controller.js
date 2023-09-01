@@ -123,7 +123,6 @@ class Productcontroller{
         try {
             const {pid} = req.params
             const productById = await Productmanager.getProductsById(pid)
-            console.log(productById)
             res.render('prodetails', {
                 productById,
                 style:"index.css"

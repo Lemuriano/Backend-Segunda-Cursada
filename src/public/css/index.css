@@ -25,6 +25,7 @@ ul{
 table, th, td {
     border: 2px solid rgb(49, 46, 46);
     border-collapse: collapse;
+    padding: 0.5rem;
   }
 
 main{

@@ -5,27 +5,14 @@
             <th>Nombre</th>
             <th>Precio</th>
             <th>Cantidad</th>
-            <th>Total</th>
         </tr>
-        {{#each docs}}
+        {{#each cartProductsListJSON.products}}
             <tr>
-                <td>{{this.title}}</td>
-                <td>{{this.description}}</td>
-                <td>{{this.category}}</td>
-                <td>{{this.price}}</td>
-                <td><a href="/products/{{this.id}}">Detalles</a></td>
-                <td><Button>Add To Cart</Button></td>
+                <td>{{this.id.title}}</td>
+                <td>{{this.id.price}}</td>
+                <td>{{quantity}}</td>
             </tr>
         {{/each}}    
     </table>
-    <div>
-        {{#if this.hasPrevPage}}
-        <a href={{this.prevLink}}> <-Pagina Anterior</a>
-        {{/if}}
-        <span>Pagina {{this.page}}</span>
-        {{#if this.hasNextPage}}
-        <a href={{this.nextLink}}>Pagina siguiente-></a>
-        {{/if}}
-    </div>
 </main>
 <script src="/js/index.js"></script>

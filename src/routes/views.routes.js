@@ -6,6 +6,6 @@ const router = Router()
 
 router.get('/products', Productcontroller.viewProducts)
 router.get('/products/:pid', Productcontroller.viewProductsById)
-router.get('/carts', Cartcontroller.viewCartProducts)
+router.get('/carts/:cid', Cartcontroller.viewCartProducts)
 
 export default router

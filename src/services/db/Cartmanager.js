@@ -1,4 +1,3 @@
-import { isObjectIdOrHexString } from "mongoose"
 import cartModel from "./models/cart.js"
 
 class Cartmanager{
@@ -23,7 +22,7 @@ class Cartmanager{
 
     getCartsById = async (cartId) =>{
         try {
-            let productByIdResult = await cartModel.findById(cartId)
+            let productByIdResult = await cartModel.findById(cartId).populate('products.id').lean()
             return productByIdResult
         } catch (error) {
             return error
