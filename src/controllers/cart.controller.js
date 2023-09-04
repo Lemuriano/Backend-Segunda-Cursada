@@ -1,8 +1,5 @@
 import { Mongoose } from "mongoose"
 import Cartmanager from "../services/db/Cartmanager.js"
-import Productmanager from "../services/db/Productmanager.js"
-// import ProductManager from "../services/fs/Productmanager.js" ----> para usar persistencia con filesistem (falta modificar los metodos)
-
 
 class Cartcontroller{
 

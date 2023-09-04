@@ -116,7 +116,7 @@ class Productcontroller{
                 //conversion del objeto de mongo para renderizarlo en handlebars
                 let productListJSON = JSON.parse(JSON.stringify(productList))
 
-                res.status(200).render('products', {
+                res.status(200).render('productslist', {
                         productListJSON,
                         style:"index.css"
                 })
@@ -132,7 +132,7 @@ class Productcontroller{
             const {pid} = req.params
             const productById = await Productmanager.getProductsById(pid)
             if(productById._id){
-                res.status(200).render('prodetails', {
+                res.status(200).render('productdetails', {
                     productById,
                     style:"index.css"
                 })
