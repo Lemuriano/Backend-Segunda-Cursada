@@ -4,7 +4,7 @@ const db = 'ProyectoCoder'
 
 // Servers para pruebas online/host
 
-const server = `mongodb+srv://bernabegoitia:0pU9UELbPziCZxUO@cluster0.dkag3v1.mongodb.net/${db}?retryWrites=true&w=majority`
+export const server = `mongodb+srv://bernabegoitia:0pU9UELbPziCZxUO@cluster0.dkag3v1.mongodb.net/${db}?retryWrites=true&w=majority`
 // export const server = `mongodb://localhost:27017/${db}`
 
 
