@@ -83,13 +83,17 @@ class Cartcontroller{
 
     viewCartProducts = async (req, res) => {
         try {
-            const {cid} = req.params
-            let cartByIdResult = await Cartmanager.getCartsById(cid)
-            let cartProductsListJSON = JSON.parse(JSON.stringify(cartByIdResult))
-            res.status(200).render('carts', {
-                cartProductsListJSON,
-                style:"index.css"
-            })
+            if(req.signed.cookies){
+                const {cid} = req.params
+                let cartByIdResult = await Cartmanager.getCartsById(cid)
+                let cartProductsListJSON = JSON.parse(JSON.stringify(cartByIdResult))
+                res.status(200).render('carts', {
+                    cartProductsListJSON,
+                    style:"index.css"
+                })
+            }else{
+                res.render('error')
+            }
         } catch (error) {
             res.status(500).send({message: `Error al obtener id:${error}`})
         }

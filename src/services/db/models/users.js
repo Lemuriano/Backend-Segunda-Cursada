@@ -15,7 +15,11 @@ const usersSchema = new mongoose.Schema({
         required: true,
         unique:true
     },
-    password: schemaStringTypeRequiered
+    password: schemaStringTypeRequiered,
+    isAdmin: {
+        type: Boolean,
+        default: false
+    } 
 })
 
 const usersModel = new mongoose.model(userCollection, usersSchema)

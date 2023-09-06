@@ -1,5 +1,6 @@
 import Usermanager from "../services/db/usermanager.js"
 
+
 class Sessioncontroller {
     newRegiteredUser = async (req, res) => {
     try {
@@ -24,10 +25,23 @@ class Sessioncontroller {
         }
         let logInResult = await Usermanager.findUser(user)
         if (logInResult){
-            res.send({status:"userOK"})
+            const {name, isAdmin} = logInResult
+            req.session.user = name
+            req.session.admin = isAdmin || false
+            return res.status(200).json({ message: 'Inicio de sesión exitoso' })
         }else{
-            res.status(204).send()
+            return res.status(204).send()
         }
+    }
+
+    logOffUser = async (req, res) =>{
+        console.log(req.session.name);
+        req.session.destroy(error =>{
+            if(error){
+                return res.json({status:"error", message:`La sesion no pudo finalizarse: ${error}`})
+            }
+        })
+        res.redirect('/home')
     }
 }
 

@@ -6,7 +6,7 @@ logForm.addEventListener('submit', event => {
     const logData = new FormData(logForm)
     const user = {}
     logData.forEach((value, key) => user[key] = (value))
-    fetch('/api/sessions/register', {
+    fetch('/sessions/register', {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {

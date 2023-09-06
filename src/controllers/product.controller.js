@@ -59,7 +59,6 @@ class Productcontroller{
 
 
             let productList = await Productmanager.getProducts(limit,page,filter,sortOrder)
-
             
             if(productList.docs.length === 0){
                 res.status(400).render('error', {error:"Error en los parametros de busqueda"})
@@ -115,10 +114,11 @@ class Productcontroller{
                 
                 //conversion del objeto de mongo para renderizarlo en handlebars
                 let productListJSON = JSON.parse(JSON.stringify(productList))
-
+                const {user} = req.session
                 res.status(200).render('productslist', {
                         productListJSON,
-                        style:"index.css"
+                        style:"index.css",
+                        user
                 })
              }
         } catch (error) {

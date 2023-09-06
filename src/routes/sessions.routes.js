@@ -7,8 +7,6 @@ router.post('/register', Sessioncontroller.newRegiteredUser)
 
 router.post('/login', Sessioncontroller.logInUser)
 
-// router.post('/logoffuser', (req, res) =>{
-//     res.send()
-// })
+router.get('/logout', Sessioncontroller.logOffUser)
 
 export default router

@@ -7,6 +7,9 @@ import __dirname from "./utils.js"
 import handlebars from "express-handlebars"
 import { connectMongoDB } from "./database.js"
 import cookieParser from "cookie-parser"
+import session from "express-session"
+import MongoStore from "connect-mongo"
+import { server } from "./database.js"
 
 const app = express()
 const PORT = 8080
@@ -17,11 +20,21 @@ app.set("view engine", "handlebars")
 app.use(express.static(__dirname+"/public"))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(cookieParser())
+app.use(cookieParser("session"))
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: server,
+        mongoOptions:{useNewUrlParser:true, useUnifiedTopology: true},
+        ttl: 2 * 60
+    }),
+    secret:"session",
+    resave:false,
+    saveUninitialized:false
+}))
 
 app.use("/api/products", productsRoutes)
 app.use("/api/carts", cartsRoutes)
-app.use("/api/sessions", sessionsRoutes)
+app.use("/sessions", sessionsRoutes)
 app.use("/", viewsRoutes)
 
 app.listen(PORT, () =>{

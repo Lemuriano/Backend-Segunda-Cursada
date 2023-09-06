@@ -9,7 +9,6 @@ class Usermanager {
 
     findUser = async ({email, password}) =>{
         const isUserCredentialsCorrect= await usersModel.findOne({email, password})
-        console.log(isUserCredentialsCorrect);
         return isUserCredentialsCorrect
     }
 }
