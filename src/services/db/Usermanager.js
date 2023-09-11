@@ -7,8 +7,8 @@ class Usermanager {
         return newUserResult
     }
 
-    findUser = async ({email, password}) =>{
-        const isUserCredentialsCorrect= await usersModel.findOne({email, password})
+    findUser = async (email) =>{
+        const isUserCredentialsCorrect= await usersModel.findOne(email)
         return isUserCredentialsCorrect
     }
 }

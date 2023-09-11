@@ -1,5 +1,5 @@
 export const isAdminAuth = (req, res, next) => {
-    if(req.session.admin === true){
+    if(req.session.isAdmin === true){
         return next()
     }
     res.render("error")

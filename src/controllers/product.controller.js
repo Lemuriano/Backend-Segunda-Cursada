@@ -115,6 +115,7 @@ class Productcontroller{
                 //conversion del objeto de mongo para renderizarlo en handlebars
                 let productListJSON = JSON.parse(JSON.stringify(productList))
                 const {user} = req.session
+                
                 res.status(200).render('productslist', {
                         productListJSON,
                         style:"index.css",

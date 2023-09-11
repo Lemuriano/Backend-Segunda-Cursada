@@ -10,6 +10,8 @@ import cookieParser from "cookie-parser"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import { server } from "./database.js"
+import passport from "passport"
+import initializePassport from "./config/passport.config.js"
 
 const app = express()
 const PORT = 8080
@@ -31,10 +33,13 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }))
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use("/api/products", productsRoutes)
 app.use("/api/carts", cartsRoutes)
-app.use("/sessions", sessionsRoutes)
+app.use("/api/sessions", sessionsRoutes)
 app.use("/", viewsRoutes)
 
 app.listen(PORT, () =>{

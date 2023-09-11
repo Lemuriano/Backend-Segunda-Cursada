@@ -4,7 +4,6 @@ const userCollection = "users"
 
 const schemaStringTypeRequiered = {
     type: String,
-    required: true
 }
 
 const usersSchema = new mongoose.Schema({
